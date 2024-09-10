@@ -1,0 +1,19 @@
+name: Test proyect
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-lastest
+    steps:
+      - name: Get code
+      # uses: para acciones del store de gitHub
+      # run: para crear acciones
+      uses: actions/checkout@v3
+    - name: Install NodeJS
+      uses: aactions/setup-node@v3
+      with:
+        node-version: 18
+    - name: install dependencies
+        # npm ci: es como npm install pero se asegura que se instaleb las mimas vesiones usadas en desarrollo en el package.json
+        run: npm ci
+      - name: Run test
+        run: npm test
