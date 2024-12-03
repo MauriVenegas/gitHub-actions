@@ -1,4 +1,6 @@
 name: Deploy project
+# Para más de un disparador (triger) => on: [push, workflow_dispatch]
+# workflow_dispatch => agrega un botón para ejecutar el workflow
 on: push
 jobs:
   # Primer job
