@@ -20,6 +20,9 @@ jobs:
         run: npm test
   # Segundo job
   deploy:
+    # needs => para decir que necesita que terminen el test para comenzar el deploy.
+    # Para mas de uno => needs: [test, otro, ...]
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Get code
