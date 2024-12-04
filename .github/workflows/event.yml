@@ -1,9 +1,20 @@
-name: Events Demo 1
+name: Events Demo
 on:
   pull_request:
     types:
-      - opened
+      - opened # Cuando se inicia el pull request (PR)
+    branches:
+      - main
+      - 'dev-*' # Para toda slas ramas que empisan con 'dev-' ej. dev-new dev-this-is-new
+      - 'feat/**' # Para las ramas con mas "/" ej. feat/new feat/new/button
   workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'dev-*' # Para toda slas ramas que empisan con 'dev-' ej. dev-new dev-this-is-new
+      - 'feat/**' # Para las ramas con mas "/" ej. feat/new feat/new/button
+    paths-ignore: # No se ejecuta el push si solo existen cambios en '.github/workflows/*'
+      - '.github/workflows/*' # Es decir ignora los cambios de esta ruta
 jobs:
   deploy:
     runs-on: ubuntu-latest
