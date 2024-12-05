@@ -18,6 +18,9 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    # Referencia al archivo de salida (con id: publish)
+    outputs:
+      script-file: ${{ steps.publish.outputs.script-file }}
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -25,6 +28,10 @@ jobs:
         run: npm ci
       - name: Build website
         run: npm run build
+        # Busca el archivo .js que se crea al construir la aplicación (npm run build)
+      - name: Publish JS filename
+        id: publish
+        run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
         # Para descargar archivos y carpetas
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -47,5 +54,8 @@ jobs:
           name: dist-files
       - name: Output content
         run: ls
+        # Referencia al archivo de salida del job "build" el cual obtiene el nombre del archivo .js
+      - name: Output filename
+        run: echo "${{ needs.build.outputs.script-file }}"
       - name: Deploy
         run: echo "Deploying..."
