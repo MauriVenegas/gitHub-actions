@@ -7,8 +7,16 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      # Verifica que se pueda acceder al repositorio
       - name: Get code
         uses: actions/checkout@v3
+        # Se cachean la instalación de dependencias para tenerlas dispobibles cuando se necesiten en los otros jobs
+      - name: cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          # Cada vez que cambia package-lock.json es porque se actulizaron las dependencias
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
       - name: Lint code
@@ -22,8 +30,16 @@ jobs:
     outputs:
       script-file: ${{ steps.publish.outputs.script-file }}
     steps:
+      # Verifica que se pueda acceder al repositorio
       - name: Get code
         uses: actions/checkout@v3
+      # Se cachean la instalación de dependencias para tenerlas dispobibles cuando se necesiten en los otros jobs
+      - name: cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          # Cada vez que cambia package-lock.json es porque se actulizaron las dependencias
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: npm ci
       - name: Build website
